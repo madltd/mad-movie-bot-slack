@@ -1,6 +1,6 @@
 {
   "name": "madmovie-slack-ts",
-  "version": "1.0.0-alpha.0",
+  "version": "1.0.0",
   "description": "Suggests a random movie based on a few preferences (Slack integration)",
   "main": "build/server.js",
   "scripts": {
