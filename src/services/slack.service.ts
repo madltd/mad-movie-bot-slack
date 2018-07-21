@@ -12,10 +12,10 @@ export class SlackService {
   constructor() {
     this.webClient = new WebClient(this.token);
 
-    this.rtmClient = new RTMClient(this.token);
+    // this.rtmClient = new RTMClient(this.token);
     // this.rtmClient.start();
 
-    this.webhook = new IncomingWebhook(this.webhookUrl);
+    // this.webhook = new IncomingWebhook(this.webhookUrl);
   }
 
 }
