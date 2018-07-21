@@ -16,7 +16,7 @@
         "routes/*"
       ]
     },
-    "outDir": "./dist/out-tsc",
+    "outDir": "./build",
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
