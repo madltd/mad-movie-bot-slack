@@ -2,13 +2,15 @@
   "name": "madmovie-slack-ts",
   "version": "1.0.0-alpha.0",
   "description": "Suggests a random movie based on a few preferences (Slack integration)",
-  "main": "server.js",
+  "main": "build/server.js",
   "scripts": {
-    "start:dev": "source .env && npm run start",
-    "start": "nodemon --use_strict",
-    "host": "sudo lt --port 3000 --subdomain madmovie-slack-alpha"
+    "start:dev": "source .env && nodemon --use-strict",
+    "start": "node build/server.js",
+    "build": "tsc",
+    "host": "sudo lt --port 3000 --subdomain madmovie-slack-alpha",
+    "postinstall": "npm run build"
   },
-  "author": "Max Myers",
+  "author": "MadLtd.",
   "license": "MIT",
   "devDependencies": {
     "@types/express": "^4.16.0",
