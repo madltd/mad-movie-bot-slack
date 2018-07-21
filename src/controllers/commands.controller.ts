@@ -133,6 +133,7 @@ class CommandsController {
     return res.status(200).end();
   }
 
+  // ! used only for dev env
   async getGenres(req: Request, res: Response, next?: NextFunction) {
     res.status(202);
     await this.themoviedbService.getGenreNamesByIds([]);
