@@ -9,7 +9,7 @@ export class FirestoreService {
     this.firestore = new Firestore({
       projectId: 'mad-movie-bot-slack-alpha',
       credentials: {
-        private_key: process.env.FIRESTORE_PRIVATE_KEY,
+        private_key: this.sanitizePrivateKey(process.env.FIRESTORE_PRIVATE_KEY),
         client_email: process.env.FIRESTORE_CLIENT_EMAIL
       }
     });
@@ -46,6 +46,10 @@ export class FirestoreService {
 
   async createDocument<T>(collectionPath: string, data: T, docId?: string, merge?: boolean): Promise<WriteResult> {
     return await this.firestore.collection(collectionPath).doc(docId).set(data, { merge });
+  }
+
+  private sanitizePrivateKey(key: string): string {
+    return key.replace(/\\n/g, '\n');
   }
 
 }
