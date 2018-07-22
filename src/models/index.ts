@@ -83,3 +83,8 @@ export interface SpokenLanguage {
   iso_639_1: string;
   name: string;
 }
+
+export interface TeamIdTokenMap {
+  team_id: string;
+  access_token: string;
+}
