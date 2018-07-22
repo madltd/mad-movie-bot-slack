@@ -87,12 +87,13 @@ export class TheMovieDBService {
 
   async getRandomMovie(options?: any): Promise<Result<DiscoverMovieResponseItem>> {
     const path = 'discover/movie';
-    const page = random(1, 500);
+    const page = random(1, 400);
     const index = random(0, 19);
     const reqParams: UrlParams = {
       language: 'en-US',
       'vote_average.gte': 5.5,
       'vote_count.gte': 20,
+      'release_date.gte': '1990-01-01',
       sort_by: 'vote_average.desc',
       page,
       api_key: this.token
