@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { SlackService } from './../services/slack.service';
-
+import { FirestoreService } from './../services/firestore.service';
+import { TeamIdTokenMap } from '../models';
 export interface OAuthSlackResponse {
   ok: boolean;
   access_token: string;
@@ -46,35 +47,14 @@ export interface SlackTeam {
 class IndexController {
 
   private slackService: SlackService;
+  private firestoreService: FirestoreService;
 
   constructor() {
     this.slackService = new SlackService();
+    this.firestoreService = new FirestoreService();
   }
 
   async handleIndex(req: Request, res: Response, next?: NextFunction): Promise<void> {
-    // const authData = {
-    //   form: {
-    //     client_id: process.env.SLACK_CLIENT_ID,
-    //     client_secret: process.env.SLACK_CLIENT_SECRET,
-    //     code: req.query.code
-    //   }
-    // };
-
-    // post('https://slack.com/api/oauth.access', authData, (error, response, body) => {
-    //   if (!error && response.statusCode === 200) {
-    //     console.log('Request was successfull', body);
-    //     if (body.ok) {
-    //       console.log('Authentication was successful', body);
-    //     } else {
-    //       console.log('Authentication failed', body.error);
-    //     }
-    //   } else {
-    //     console.log('Error in calling request in OAuth controller');
-    //     throw new Error(error);
-    //   }
-    // });
-
-
     try {
       const slackOauthResponse = await this.slackService.webClient.oauth.access({
         client_id: process.env.SLACK_CLIENT_ID,
@@ -85,6 +65,22 @@ class IndexController {
       if (slackOauthResponse.ok) {
         const successfulResponse: OAuthSlackResponse = slackOauthResponse as OAuthSlackResponse;
         // console.log('Authentication was successful', slackOauthResponse);
+
+        const doc: TeamIdTokenMap = {
+          team_id: successfulResponse.team_id,
+          access_token: successfulResponse.access_token
+        };
+
+        try {
+          const docWriteResult = await this.firestoreService.createDocument('teams', doc, doc.team_id, true);
+          // console.log('docWriteResult', docWriteResult);
+        } catch (error) {
+          console.log('Error in writing doc to database. The app will not work.');
+          console.log('Error in calling firestoreService.createDocument()');
+          throw new Error(error);
+        }
+
+
         // TODO: implement try-catch
         const teamInfo = await this.slackService.webClient.team.info({ token: successfulResponse.access_token });
         // console.log('teamInfo', teamInfo);
@@ -92,6 +88,7 @@ class IndexController {
           const successfulTeamInfo: SlackTeamSuccessfulResponse = teamInfo as SlackTeamSuccessfulResponse;
 
           this.slackService.webClient.chat.postMessage({
+            token: doc.access_token,
             channel: successfulResponse.incoming_webhook.channel_id,
             text: `Now your Slack Space may enjoy *Mad Movie Bot*\nJust type *\`/madmovie\`* and recieve a random movie suggestion`,
             mrkdwn: true

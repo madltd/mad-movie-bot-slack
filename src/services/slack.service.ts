@@ -9,7 +9,10 @@ export class SlackService {
   private token: string = process.env.SLACK_TOKEN;
   private webhookUrl: string = process.env.SLACK_WEBHOOK_URL;
 
-  constructor() {
+  constructor(token?: string) {
+    if (token && token !== '') {
+      this.token = token;
+    }
     this.webClient = new WebClient(this.token);
 
     // this.rtmClient = new RTMClient(this.token);

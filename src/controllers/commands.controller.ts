@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { SlackService } from './../services/slack.service';
 import { TheMovieDBService } from './../services/themoviedb.service';
-import { DiscoverMovieResponseItem, MovieDetailResponse } from '../models';
+import { FirestoreService } from '../services/firestore.service';
+import { DiscoverMovieResponseItem, MovieDetailResponse, TeamIdTokenMap } from '../models';
 import * as moment from 'moment';
 
 interface SlashCommandResponse {
@@ -21,10 +22,12 @@ class CommandsController {
 
   private slackService: SlackService;
   private themoviedbService: TheMovieDBService;
+  private firestoreService: FirestoreService;
 
   constructor() {
     this.slackService = new SlackService();
     this.themoviedbService = new TheMovieDBService();
+    this.firestoreService = new FirestoreService();
   }
 
   async handleIndex(req: Request, res: Response, next?: NextFunction) {
@@ -35,8 +38,30 @@ class CommandsController {
     let genres: string[];
     let movieDetails: MovieDetailResponse;
 
+    let token = process.env.SLACK_TOKEN;
+
+    try {
+      // console.log('team_id', slackResponse.team_id);
+      const response = await this.firestoreService.getDocumentFromCollection<TeamIdTokenMap>('teams', 'team_id', '==', slackResponse.team_id);
+
+      if (response.success) {
+        if (response.data.access_token) {
+          token = response.data.access_token;
+        } else {
+          console.log('Response from firestoreService.getDocumentFromCollection() was successful, but unable to get token', response);
+        }
+      } else {
+        console.log('Error in response from firestoreService.getDocumentFromCollection()', response.message);
+        console.log(response.error);
+      }
+    } catch (error) {
+      console.log('Error in calling firestoreService.getDocumentFromCollection()');
+      throw new Error(error);
+    }
+
     const tempMess = await this.slackService.webClient.chat.postEphemeral({
-      channel: req.body.channel_id,
+      token,
+      channel: slackResponse.channel_id,
       text: 'Fetching a mad movie for you...',
       user: slackResponse.user_id
     });
@@ -84,12 +109,14 @@ class CommandsController {
 
     try {
       const result = await this.slackService.webClient.chat.postMessage({
+        token,
         channel: slackResponse.channel_id,
         text: `https://www.imdb.com/title/${movieDetails.imdb_id}`,
         parse: 'full',
         unfurl_links: false,
         // text: `*${slackResponse.command}* ${slackResponse.text}`,
         mrkdwn: true,
+        as_user: false,
         attachments: [
           {
             fallback: `This is a fallback, something failed in sending full message, suggested movie: ${movie.title}`,
