@@ -12,7 +12,11 @@ class App {
 
   constructor() {
     this.express = express();
-    this.express.set('views', join(__dirname, '../../views'));
+    if (process.env.NODE_ENV === 'dev') {
+      this.express.set('views', join(__dirname, './../views'));
+    } else {
+      this.express.set('views', join(__dirname, '../../views'));
+    }
     this.express.set('view engine', 'pug');
     this.express.use(bodyParser.urlencoded({ 'extended': true }));
     this.mountRoutes();
