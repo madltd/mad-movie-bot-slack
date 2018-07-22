@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express';
-import { post } from 'request';
 import { SlackService } from './../services/slack.service';
 
 export interface OAuthSlackResponse {
