@@ -1,13 +1,14 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 class IndexController {
 
   constructor() { }
 
-  handleIndex(req: Request, res: Response) {
-    res.json({
-      message: 'Hello World!'
-    });
+  handleIndex(req: Request, res: Response, next?: NextFunction) {
+    // res.json({
+    //   message: 'Hello World!'
+    // });
+    res.render('index');
   }
 }
 

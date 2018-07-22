@@ -117,7 +117,7 @@ export class TheMovieDBService {
             success: true,
             data: movie
           };
-          console.log('themoviedbservice result', result);
+          // console.log('themoviedbservice result', result);
         } else {
           console.log('No movies found with such request:', `${this.host}${path}`);
           result = {

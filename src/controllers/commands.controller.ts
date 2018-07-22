@@ -87,6 +87,7 @@ class CommandsController {
         channel: slackResponse.channel_id,
         text: `https://www.imdb.com/title/${movieDetails.imdb_id}`,
         parse: 'full',
+        unfurl_links: false,
         // text: `*${slackResponse.command}* ${slackResponse.text}`,
         mrkdwn: true,
         attachments: [
@@ -119,7 +120,7 @@ class CommandsController {
                 short: false
               },
             ],
-            footer: 'Brought to you by MadLtd., motherfucker',
+            footer: 'Brought to you by MadLtd.',
             author_name: 'MadMovie',
           }
         ]
