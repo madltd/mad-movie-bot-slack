@@ -15,7 +15,7 @@ export class SlackService {
     // this.rtmClient = new RTMClient(this.token);
     // this.rtmClient.start();
 
-    this.webhook = new IncomingWebhook(this.webhookUrl);
+    // this.webhook = new IncomingWebhook(this.webhookUrl);
   }
 
 }
