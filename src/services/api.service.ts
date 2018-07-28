@@ -36,7 +36,7 @@ export class ApiService {
     let parsedResponse: JSON | object;
 
     try {
-      console.log('url:', `${url}${paramsStr.length > 0 ? '?' : ''}${paramsStr}`);
+      // console.log('url:', `${url}${paramsStr.length > 0 ? '?' : ''}${paramsStr}`);
       unparsedResponse = await fetch(`${url}${paramsStr.length > 0 ? '?' : ''}${paramsStr}`, this.opts);
       parsedResponse = asJson ? await unparsedResponse.json() : await unparsedResponse.text();
     } catch (error) {

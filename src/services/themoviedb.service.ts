@@ -176,6 +176,7 @@ export class TheMovieDBService {
       api_key: this.token
     };
 
+    // console.log('preferences', preferences);
     if (preferences && preferences.length > 0) {
       for (const preference of preferences) {
         switch (preference.filter) {

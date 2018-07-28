@@ -77,9 +77,11 @@ class CommandsController {
 
     const preferencesResponse = this.parsePreferences();
 
-    for (const preference of preferencesResponse.preferences) {
-      console.log('preference', preference);
-    }
+    // if (preferencesResponse.preferences) {
+    //   for (const preference of preferencesResponse.preferences) {
+    //     console.log('preference', preference);
+    //   }
+    // }
 
     if (!preferencesResponse.contunue) {
       return;
@@ -205,6 +207,35 @@ class CommandsController {
           ],
           footer: 'Brought to you by MadLtd.',
           author_name: 'MadMovie',
+          callback_id: 'random_movie_message',
+          // actions: [
+          //   {
+          //     name: 'action',
+          //     text: 'Next',
+          //     value: 'next',
+          //     type: 'button'
+          //   },
+          //   {
+          //     name: 'action',
+          //     text: 'Watched',
+          //     value: 'watched',
+          //     type: 'button'
+          //   },
+          //   {
+          //     name: 'action',
+          //     text: `Don't show again`,
+          //     value: 'dontshow',
+          //     type: 'button',
+          //     style: 'danger'
+          //   },
+          //   {
+          //     name: 'action',
+          //     text: 'Watch now',
+          //     value: 'watch',
+          //     type: 'button',
+          //     style: 'primary'
+          //   }
+          // ]
         }
       ]
     })
@@ -234,6 +265,7 @@ class CommandsController {
 
     const wordsArr = this.slashCommandResponse.text.split(' ');
 
+    // console.log('wordsArr', wordsArr);
     if (wordsArr.length > 0 && wordsArr[0] !== '') {
       // if the first word ~help then show heklp message and discontinue
       if (['help', 'hepl', 'h', '--help', '-h', '-help'].includes(wordsArr[0])) {
