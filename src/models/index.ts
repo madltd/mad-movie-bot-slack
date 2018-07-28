@@ -100,3 +100,9 @@ export interface TeamIdTokenMap {
   team_id: string;
   access_token: string;
 }
+
+export interface Preference {
+  filter: string;
+  matchType: string;
+  values: string[];
+}
