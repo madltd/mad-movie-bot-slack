@@ -57,12 +57,15 @@ export class TheMovieDBService {
     return result;
   }
 
-  async getMovieDetails(id: number): Promise<Result<MovieDetailResponse>> {
+  async getMovieDetails(id: number, appendVideos = false): Promise<Result<MovieDetailResponse>> {
     const path = `movie/${id}`;
     const reqParams: UrlParams = {
       language: 'en-US',
       api_key: this.token
     };
+    if (appendVideos) {
+      reqParams['append_to_response'] = 'videos';
+    }
 
     let result: Result<MovieDetailResponse>;
 

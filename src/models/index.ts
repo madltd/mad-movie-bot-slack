@@ -58,8 +58,20 @@ export interface MovieDetailResponse {
   tagline: string;
   title: string;
   video: boolean;
+  videos?: { results: MovieDetailVideo[] };
   vote_average: number;
   vote_count: number;
+}
+
+export interface MovieDetailVideo {
+  id: string;
+  iso_639_1?: string;
+  iso_3166_1?: string;
+  key: string;
+  name: string;
+  site: string;
+  size: number;
+  type: string;
 }
 
 export interface Genre {

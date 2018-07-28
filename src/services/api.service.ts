@@ -19,7 +19,7 @@ export class ApiService {
     return urlRegex.test(url);
   }
 
-  async fetchUrl(url: string, params?: UrlParams, opts?: RequestInit): Promise<any> {
+  async fetchUrl(url: string, params?: UrlParams, opts?: RequestInit, asJson = true): Promise<any> {
 
     if (!this.isUrl(url.toString())) {
       throw new Error(`Non URL value: ${url}`);
@@ -38,7 +38,7 @@ export class ApiService {
     try {
       // console.log('url:', `${url}${paramsStr.length > 0 ? '?' : ''}${paramsStr}`);
       unparsedResponse = await fetch(`${url}${paramsStr.length > 0 ? '?' : ''}${paramsStr}`, this.opts);
-      parsedResponse = await unparsedResponse.json();
+      parsedResponse = asJson ? await unparsedResponse.json() : await unparsedResponse.text();
     } catch (error) {
       parsedResponse = { error };
       throw new Error(`Fetch or parse error: ${error}`);
@@ -52,12 +52,14 @@ export class ApiService {
   private stringifyParams(params: UrlParams): string {
     let paramsStr = '';
 
-    Object.keys(params).forEach((param, index, array) => {
-      paramsStr += `${param}=${params[param]}`;
-      if (index !== array.length - 1) {
-        paramsStr += '&';
-      }
-    });
+    if (params !== undefined && params !== null) {
+      Object.keys(params).forEach((param, index, array) => {
+        paramsStr += `${param}=${params[param]}`;
+        if (index !== array.length - 1) {
+          paramsStr += '&';
+        }
+      });
+    }
 
     return paramsStr;
   }
