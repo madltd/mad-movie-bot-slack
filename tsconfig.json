@@ -1,19 +1,16 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
-    "baseUrl": "src",
+    "baseUrl": "./",
     "paths": {
-      "*": [
-        "./*"
-      ],
       "@services/*": [
-        "services/*"
+        "src/services/*"
       ],
       "@routes/*": [
-        "routes/*"
+        "src/routes/*"
       ],
       "@controllers/*": [
-        "routes/*"
+        "src/routes/*"
       ]
     },
     "outDir": "./build",
