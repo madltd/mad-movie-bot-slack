@@ -1,5 +1,5 @@
 {
-  "name": "madmovie-slack-ts",
+  "name": "madmoviebot-slack-node-ts",
   "version": "1.3.0-alpha.0",
   "description": "Suggests a random movie based on a few preferences (Slack integration)",
   "main": "build/server.js",
